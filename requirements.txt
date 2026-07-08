@@ -1,41 +1,5 @@
-# Safety Stock Recommendation Tool
-
-Streamlit app that generates safety stock recommendations per material from SAP MARC and MB51 extracts.
-
-## Setup
-
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
-
-## Usage
-
-1. Upload the MARC extract (.xlsx) and MB51 extract (.xlsx).
-2. Adjust parameters in the sidebar:
-   - Service level (90 / 95 / 97.5 / 99%)
-   - Demand signal (641, 601, or both)
-   - Lead time source (TRLT or PDT+GRT)
-   - Days of Supply benchmark
-   - Delta alignment threshold
-3. Review the KPI summary, filterable recommendation table, and per-material demand charts.
-4. Download the formatted Excel output (includes a methodology sheet).
-
-## Methodology
-
-- Statistical SS = Z x sigma(monthly demand) x sqrt(lead time in months)
-- DoS SS = (avg monthly demand / 30) x benchmark days
-- Recommended SS = ceiling(max(Statistical SS, DoS SS))
-- Zero-demand months are included in the standard deviation to correctly capture intermittent demand.
-- Materials in MARC with no movement history are flagged, not dropped.
-
-## Adapting to different SAP extracts
-
-If your extract columns are named differently, edit the `MARC_COLS` and `MB51_COLS`
-dictionaries at the top of `app.py`. Nothing else needs to change.
-
-## Required columns
-
-**MARC:** Material, Plnt, Typ, MRPCn, Safety Stock, Fix. lot size, PDT, GRT, TRLT, ABC
-
-**MB51:** Material, Material Description, Plant, Movement Type, Posting Date, Qty in unit of entry, Unit of Entry
+streamlit
+pandas
+numpy
+openpyxl
+pillow
