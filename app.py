@@ -60,13 +60,19 @@ st.set_page_config(
     layout="wide",
 )
 
-# Open Sans + brand styling
+# Brand styling (no external font import, so it works on offline/locked-down networks).
+# We prefer Open Sans if it is installed locally, otherwise fall back to system sans-serif.
+# The font rule targets the app container but explicitly excludes icon spans, so it cannot
+# break Material icon ligatures (e.g. the file-uploader button).
 st.markdown(
     f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-    html, body, [class*="st-"], [class*="css"] {{
-        font-family: 'Open Sans', sans-serif;
+    [data-testid="stAppViewContainer"], [data-testid="stSidebar"] {{
+        font-family: 'Open Sans', 'Segoe UI', Helvetica, Arial, sans-serif;
+    }}
+    [data-testid="stAppViewContainer"] [class*="material-icons"],
+    [data-testid="stSidebar"] [class*="material-icons"] {{
+        font-family: 'Material Symbols Rounded', 'Material Icons' !important;
     }}
     h1, h2, h3 {{ color: {MESSER_BLUE}; }}
     [data-testid="stMetricValue"] {{ color: {MESSER_BLUE}; }}
@@ -78,7 +84,11 @@ st.markdown(
 _logo_col, _title_col = st.columns([1, 5])
 with _logo_col:
     if os.path.exists("messer_logo.png"):
-        st.image("messer_logo.png", width=150)
+        try:
+            st.image("messer_logo.png", width=150)
+        except Exception:
+            # Corrupt or unreadable image: skip the logo rather than crash the app
+            pass
 with _title_col:
     st.title("Safety Stock Recommendation Tool")
 st.caption(
