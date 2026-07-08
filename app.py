@@ -541,8 +541,8 @@ if marc_file and mb51_file:
     styled = (
         df_view.drop(columns=["Segment"])
         .style
-        .applymap(style_delta, subset=["Delta"])
-        .applymap(style_cv, subset=["CV"])
+        .map(style_delta, subset=["Delta"])
+        .map(style_cv, subset=["CV"])
         .format(precision=1, na_rep="N/A")
     )
     st.dataframe(styled, use_container_width=True, height=520)
